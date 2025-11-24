@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SmartEats — Restaurant Dashboard</title>
+<link rel="stylesheet" href="css/style.css"></head>
+<body>
+<header class="header container">
+  <div class="brand">SmartEats — Restaurant</div>
+  <div class="actions"><a class="action-btn" href="#" onclick="logout()">Logout</a></div>
+</header>
+
+<main class="container page-box">
+  <h2 id="restName">My Restaurant</h2>
+  <div style="display:flex;gap:18px;align-items:flex-start">
+    <div style="flex:1">
+      <div style="margin-bottom:12px"><button class="btn" onclick="toggleNewItem()">Add Menu Item</button></div>
+      <div id="newItemForm" style="display:none;background:#fff;padding:12px;border-radius:10px;box-shadow:var(--shadow-1)">
+        <input id="itemName" placeholder="Item name" style="width:100%;padding:10px;margin-bottom:8px">
+        <input id="itemPrice" placeholder="Price" style="width:100%;padding:10px;margin-bottom:8px">
+        <button class="btn" onclick="addMenuItem()">Save Item</button>
+      </div>
+
+      <div class="section-title">My Menu</div>
+      <div id="myMenu" class="menu-list"></div>
+    </div>
+
+    <aside style="width:320px">
+      <div style="background:#fff;padding:14px;border-radius:12px;box-shadow:var(--shadow-1)">
+        <h4>Incoming Orders</h4>
+        <div id="incomingOrders"></div>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<script type="module">
+  import { getSession } from './js/api.js';
+  import { logout as logoutFn } from './js/auth.js';
+  import { get, save } from './js/api.js';
+  window.logout = logoutFn;
+
+  const session = getSession();
+  if(!session || session.role !== 'restaurant'){ window.location.href = 'login.html'; }
+  document.getElementById('restName').innerText = session.name;
+
+  function getMyMenu(){ const allMenus = get('restaurant_menus') || {}; return allMenus[session.email] || []; }
+  function saveMyMenu(menu){ const all = get('restaurant_menus') || {}; all[session.email] = menu; save('restaurant_menus', all); }
+
+  window.toggleNewItem = ()=>{ const el=document.getElementById('newItemForm'); el.style.display = el.style.display==='none'?'block':'none'; };
+  window.addMenuItem = ()=>{
+    const name=document.getElementById('itemName').value.trim();
+    const price=parseFloat(document.getElementById('itemPrice').value);
+    if(!name||!price){ alert('Enter name & price'); return; }
+    const menu = getMyMenu(); menu.push({id:Date.now(), name, price}); saveMyMenu(menu); renderMyMenu();
+    document.getElementById('itemName').value=''; document.getElementById('itemPrice').value='';
+  };
+
+  function renderMyMenu(){
+    const list=document.getElementById('myMenu'); list.innerHTML=''; const menu=getMyMenu();
+    if(menu.length===0) list.innerHTML='<div style="color:var(--muted)">No items yet</div>';
+    menu.forEach(it=>{
+      const el=document.createElement('div'); el.className='menu-item';
+      el.innerHTML=`<div style="flex:1"><strong>${it.name}</strong><div style="color:var(--muted)">₹${it.price}</div></div>
+      <div><button class="btn secondary" onclick="removeItem(${it.id})">Remove</button></div>`;
+      list.appendChild(el);
+    });
+  }
+  window.removeItem = (id)=>{ let menu=getMyMenu(); menu=menu.filter(i=>i.id!==id); saveMyMenu(menu); renderMyMenu(); };
+
+  function renderIncomingOrders(){
+    const box=document.getElementById('incomingOrders'); box.innerHTML=''; const orders = get('orders') || [];
+    const mine = orders.filter(o => o.restaurantEmail === session.email);
+    if(mine.length===0){ box.innerHTML='<div style="color:var(--muted)">No incoming orders</div>'; return; }
+    mine.forEach(o=>{
+      const d=document.createElement('div'); d.style.padding='8px 0'; d.innerHTML = `<div><strong>Order #${o.id}</strong></div>
+        <div style="color:var(--muted)">Total: ₹${o.total}</div>
+        <div style="margin-top:6px"><button class="btn" onclick="acceptOrder(${o.id})">Accept</button>
+        <button class="btn secondary" style="margin-left:8px" onclick="assignDelivery(${o.id})">Assign</button></div>`;
+      box.appendChild(d);
+    });
+  }
+  window.acceptOrder = (orderId)=>{ const orders=get('orders')||[]; const o=orders.find(x=>x.id===orderId); if(o){ o.status='Preparing'; save('orders',orders); renderIncomingOrders(); alert('Accepted'); } };
+  window.assignDelivery = (orderId)=>{ // choose first available delivery partner
+    const users = get('users') || []; const deliverys = users.filter(u=>u.role==='delivery_partner');
+    if(deliverys.length===0){ alert('No delivery partners registered'); return; }
+    const chosen = deliverys[0];
+    const orders = get('orders') || []; const o = orders.find(x=>x.id===orderId); if(o){ o.assignedDeliveryEmail = chosen.email; o.status='Assigned'; save('orders', orders); renderIncomingOrders(); alert('Assigned to '+chosen.name); }
+  };
+
+  document.addEventListener('DOMContentLoaded', ()=>{ renderMyMenu(); renderIncomingOrders(); });
+</script>
+</body>
+</html>

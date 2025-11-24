@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Tracking — SmartEats</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header class="header container">
+    <div class="brand" onclick="location.href='orders.html'">SmartEats</div>
+</header>
+
+<section class="container page-box">
+
+    <h2 class="section-title">Order Tracking</h2>
+
+    <div class="timeline-card">
+        <div id="timeline" class="timeline"></div>
+    </div>
+
+</section>
+
+<script type="module">
+    import { loadTracking } from './js/cart.js';
+    document.addEventListener("DOMContentLoaded", loadTracking);
+</script>
+
+</body>
+</html>

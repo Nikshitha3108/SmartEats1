@@ -1,0 +1,217 @@
+/* SmartEats — PDF-grade Professional UI
+   Overwrites previous stylesheet.
+   Keeps same HTML class/ID names used in the project.
+   Reference: user uploaded PDF UI. :contentReference[oaicite:1]{index=1}
+*/
+
+/* Import font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+/* -------------------------
+   Design tokens
+   ------------------------- */
+:root{
+  --bg-1: #fbfbfc;
+  --brand-1: #ff5722;    /* primary orange */
+  --brand-2: #ff7a45;    /* secondary */
+  --accent: #10b981;     /* green for success */
+  --muted: #657487;
+  --card: #ffffff;
+  --glass: rgba(255,255,255,0.6);
+  --glass-strong: rgba(255,255,255,0.85);
+  --radius-xl: 20px;
+  --radius-lg: 14px;
+  --radius-md: 10px;
+  --shadow-xlight: 0 6px 18px rgba(18,24,40,0.06);
+  --shadow-light: 0 14px 40px rgba(18,24,40,0.08);
+  --shadow-heavy: 0 24px 80px rgba(2,6,23,0.16);
+  --max-width: 1180px;
+}
+
+/* -------------------------
+   Reset / Base
+   ------------------------- */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  background: linear-gradient(180deg,#f7f8fb 0%, #fbfdff 100%);
+  color:#0f1724;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.45;
+  font-size:15px;
+}
+a{color:inherit;text-decoration:none}
+.container{max-width:var(--max-width);margin:0 auto;padding:0 18px}
+
+/* -------------------------
+   Header (big, airy, sticky)
+   ------------------------- */
+.header{
+  position:sticky;top:0;z-index:1200;
+  display:flex;align-items:center;gap:18px;
+  padding:14px 18px;
+  background: linear-gradient(90deg, rgba(255,87,34,0.98), rgba(255,122,69,0.98));
+  box-shadow:var(--shadow-xlight);
+}
+.brand{font-weight:900;color:#fff;font-size:22px;cursor:pointer;letter-spacing:0.2px}
+.searchbar{
+  flex:1;display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:12px;background:rgba(255,255,255,0.96);
+  box-shadow:0 6px 20px rgba(2,6,23,0.06)
+}
+.searchbar input{border:0;outline:none;background:transparent;padding:8px;font-size:14px;width:100%}
+.header .actions{display:flex;gap:10px}
+
+/* -------------------------
+   Hero — large, dramatic
+   ------------------------- */
+.hero{
+  margin:22px auto;border-radius:var(--radius-xl);overflow:hidden;position:relative;
+  height:340px;display:flex;align-items:center;background-size:cover;background-position:center;
+  box-shadow:var(--shadow-heavy);
+  background-image:
+    linear-gradient(180deg, rgba(2,6,23,0.16) 0%, rgba(2,6,23,0.06) 50%),
+    url('../images/hero.jpg');
+}
+.hero .cta{
+  margin-left:44px;padding:28px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  color:#fff;backdrop-filter: blur(8px);max-width:720px;box-shadow:0 20px 60px rgba(2,6,23,0.28)
+}
+.hero h1{font-size:36px;margin:0 0 8px 0;font-weight:900;line-height:1.02}
+.hero p{margin:0;color:rgba(255,255,255,0.95);font-weight:500}
+.hero .cta .btn{margin-top:14px}
+
+/* -------------------------
+   Categories (circular icons)
+   ------------------------- */
+.categories{display:flex;gap:14px;overflow:auto;padding:18px 6px;margin-top:20px}
+.categories::-webkit-scrollbar{display:none}
+.cat-item{
+  min-width:120px;background:linear-gradient(180deg,#fff,#fff);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;
+  box-shadow:var(--shadow-xlight);cursor:pointer;text-align:center;transition:transform .18s,box-shadow .18s;
+}
+.cat-item:hover{transform:translateY(-6px);box-shadow:var(--shadow-heavy)}
+.cat-item img{width:56px;height:56px;border-radius:12px;object-fit:cover;box-shadow:0 10px 30px rgba(2,6,23,0.06)}
+
+/* -------------------------
+   Offers carousel (prominent cards)
+   ------------------------- */
+.offers{display:flex;gap:16px;overflow:auto;padding:10px 0;margin-top:6px}
+.offer-card{min-width:420px;height:180px;border-radius:14px;overflow:hidden;position:relative;box-shadow:var(--shadow-xlight)}
+.offer-card img{width:100%;height:100%;object-fit:cover;display:block}
+.offer-badge{position:absolute;left:18px;top:16px;background:linear-gradient(90deg,var(--brand-1),var(--brand-2));padding:10px 14px;border-radius:12px;color:#fff;font-weight:800;box-shadow:0 10px 30px rgba(2,6,23,0.16)}
+
+/* -------------------------
+   Section Title
+   ------------------------- */
+.section-title{font-size:20px;margin:18px 0 10px;font-weight:800;color:#0f1724}
+
+/* -------------------------
+   Restaurants grid — premium cards
+   ------------------------- */
+.rest-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.rest-card{
+  background:var(--card);border-radius:16px;overflow:hidden;box-shadow:var(--shadow-xlight);position:relative;border:1px solid rgba(12,17,23,0.03);
+  transition:transform .18s,box-shadow .18s;
+}
+.rest-card:hover{transform:translateY(-10px);box-shadow:var(--shadow-heavy)}
+.rest-card img{width:100%;height:190px;object-fit:cover;display:block;transition:transform .6s}
+.rest-card:hover img{transform:scale(1.06)}
+.rest-info{padding:14px}
+.rest-info h3{font-size:18px;margin:0 0 6px;font-weight:900}
+.rest-info p{margin:0;color:var(--muted);font-size:14px}
+.rest-meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.rating-badge{background:linear-gradient(180deg,#111827,#0f1724);color:#fff;padding:6px 10px;border-radius:10px;font-weight:700;font-size:13px;box-shadow:0 10px 30px rgba(2,6,23,0.12)}
+.discount-tag{position:absolute;right:14px;top:14px;background:linear-gradient(90deg,#06b6d4,#10b981);color:#fff;padding:8px 10px;border-radius:10px;font-weight:800}
+
+/* -------------------------
+   Menu list — modern tiles
+   ------------------------- */
+.menu-list{display:flex;flex-direction:column;gap:14px;margin-top:12px}
+.menu-item{
+  display:flex;gap:18px;align-items:center;background:var(--card);padding:14px;border-radius:12px;box-shadow:var(--shadow-xlight);border:1px solid rgba(12,17,23,0.03)
+}
+.menu-item img{width:110px;height:78px;border-radius:10px;object-fit:cover;flex-shrink:0}
+.menu-meta{flex:1}
+.menu-meta h4{margin:0 0 6px;font-size:16px;font-weight:800}
+.menu-meta p{margin:0;color:var(--muted);font-size:13px}
+.price-button{display:flex;flex-direction:column;align-items:flex-end;gap:8px;min-width:120px}
+.price{font-weight:900;font-size:16px}
+
+/* -------------------------
+   Cart preview — frosted card
+   ------------------------- */
+.cart-preview{
+  position:fixed;right:26px;bottom:26px;width:340px;background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.98));padding:16px;border-radius:16px;
+  box-shadow:var(--shadow-heavy);z-index:1600;border:1px solid rgba(12,17,23,0.04)
+}
+.cart-preview h4{margin:0 0 10px;font-weight:800}
+.cart-items-list{max-height:260px;overflow:auto;padding-right:6px}
+.cart-item{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px dashed rgba(12,17,23,0.04)}
+.cart-item small{color:var(--muted)}
+
+/* -------------------------
+   Form card (login/register) — glassmorphism
+   ------------------------- */
+.form-card{
+  background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.5));
+  border-radius:14px;padding:22px;box-shadow:0 18px 60px rgba(2,6,23,0.12);border:1px solid rgba(255,255,255,0.3)
+}
+.form-card h2{margin-bottom:8px}
+.form-card p{color:var(--muted);margin-bottom:12px}
+.form-card input, .form-card select{width:100%;padding:12px;margin-top:8px;border-radius:10px;border:1px solid rgba(12,17,23,0.06);outline:none}
+.form-card input:focus{box-shadow:0 10px 30px rgba(255,87,34,0.08);border-color:var(--brand-1)}
+
+/* -------------------------
+   Order & Dashboard panels
+   ------------------------- */
+.page-box{max-width:980px;margin:28px auto;padding:18px}
+.dashboard-grid{display:grid;grid-template-columns:1fr 320px;gap:18px;align-items:start}
+.dashboard-card{background:var(--card);padding:18px;border-radius:14px;box-shadow:var(--shadow-xlight)}
+
+/* -------------------------
+   Order tracking timeline — stylized
+   ------------------------- */
+.timeline-card{background:var(--card);padding:20px;border-radius:14px;box-shadow:var(--shadow-xlight)}
+.timeline{display:flex;flex-direction:column;gap:18px;margin-top:12px}
+.timeline-item{display:flex;gap:12px;align-items:flex-start}
+.timeline-item .dot{min-width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;background:linear-gradient(90deg,var(--brand-1),var(--brand-2))}
+.timeline-item .body{flex:1}
+.timeline-item .body strong{display:block;font-weight:800}
+.timeline-item .time{color:var(--muted);font-size:13px;margin-top:6px}
+
+/* -------------------------
+   Misc small utilities
+   ------------------------- */
+.section-muted{color:var(--muted);font-size:13px}
+.skeleton{background:linear-gradient(90deg,#f2f2f2 0%, #e9eef5 50%, #f2f2f2 100%);background-size:200% 100%;animation:shimmer 1.4s linear infinite;border-radius:8px}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+
+a:focus,button:focus,input:focus{outline:3px solid rgba(255,87,34,0.14);outline-offset:3px;border-radius:8px}
+
+/* -------------------------
+   Responsive breakpoints
+   ------------------------- */
+@media (max-width:980px){
+  .hero{height:240px}
+  .offers .offer-card{min-width:320px;height:140px}
+  .cart-preview{width:88%;left:6%;right:6%}
+  .rest-card img{height:160px}
+  .menu-item img{width:96px;height:72px}
+  .dashboard-grid{grid-template-columns:1fr}
+}
+
+@media (max-width:640px){
+  .hero{height:180px;border-radius:12px}
+  .categories{padding:10px}
+  .cat-item{min-width:96px;padding:10px}
+  .rest-card img{height:140px}
+  .cart-preview{right:12px;left:12px;bottom:12px;width:auto}
+  .header{padding:12px 12px;flex-wrap:wrap}
+}
+
+/* -------------------------
+   End of file
+   ------------------------- */

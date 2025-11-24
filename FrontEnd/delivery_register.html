@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartEats — Delivery Partner Signup</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body style="
+    background: linear-gradient(135deg, #ff7643 0%, #ff5722 40%, #ff9166 100%);
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+">
+
+    <!-- Glass Card -->
+    <div class="form-card" style="
+        width: 450px;
+        padding:32px;
+        border-radius: 20px;
+        backdrop-filter: blur(12px);
+        background: rgba(255,255,255,0.32);
+        border: 1px solid rgba(255,255,255,0.45);
+        box-shadow: 0 25px 80px rgba(0,0,0,0.30);
+    ">
+
+        <h2 style="text-align:center;margin-bottom:8px;color:white;font-weight:900;font-size:28px;">
+            Join as Delivery Partner
+        </h2>
+
+        <p style="text-align:center;color:#ffe9e1;margin-bottom:22px;font-size:15px;">
+            Register to start receiving delivery assignments
+        </p>
+
+        <!-- Full Name -->
+        <input id="name" placeholder="Full Name" style="
+            width:100%;padding:14px;border-radius:12px;
+            border:1px solid rgba(255,255,255,0.55);
+            background:rgba(255,255,255,0.75);
+            margin-bottom:14px;
+        ">
+
+        <!-- Email -->
+        <input id="email" type="email" placeholder="Email Address" style="
+            width:100%;padding:14px;border-radius:12px;
+            border:1px solid rgba(255,255,255,0.55);
+            background:rgba(255,255,255,0.75);
+            margin-bottom:14px;
+        ">
+
+        <!-- Password -->
+        <input id="password" type="password" placeholder="Password" style="
+            width:100%;padding:14px;border-radius:12px;
+            border:1px solid rgba(255,255,255,0.55);
+            background:rgba(255,255,255,0.75);
+            margin-bottom:14px;
+        ">
+
+        <!-- Vehicle Type -->
+        <input id="vehicle" placeholder="Vehicle Type (Bike / Scooty / Car)" style="
+            width:100%;padding:14px;border-radius:12px;
+            border:1px solid rgba(255,255,255,0.55);
+            background:rgba(255,255,255,0.75);
+            margin-bottom:20px;
+        ">
+
+        <!-- Register Button -->
+        <button class="btn" onclick="handleRegister('delivery_partner')" style="
+            width:100%;padding:14px;font-size:16px;border-radius:12px;
+            margin-bottom:16px;
+        ">
+            Create Delivery Account
+        </button>
+
+        <p style="text-align:center;color:white;margin-bottom:12px;font-size:14px">
+            Already have an account?
+        </p>
+
+        <!-- Back to Login -->
+        <a href="login.html" class="btn secondary" style="
+            width:100%;display:flex;justify-content:center;
+            padding:12px;border-radius:12px;
+        ">
+            Back to Login
+        </a>
+    </div>
+
+    <script type="module">
+        import { handleRegister } from './js/auth.js';
+        window.handleRegister = handleRegister;
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurants — SmartEats</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header class="header container">
+    <div class="brand" onclick="location.href='customer_dashboard.html'">SmartEats</div>
+    <div class="searchbar">
+        <input placeholder="Search restaurants..." oninput="window.searchRestaurants && window.searchRestaurants(this.value)">
+    </div>
+    <div class="actions">
+        <a class="action-btn" href="cart.html">Cart</a>
+        <a class="action-btn" href="orders.html">Orders</a>
+    </div>
+</header>
+
+<section class="container page-box">
+    <h2 class="section-title">All Restaurants</h2>
+
+    <div id="restGrid" class="rest-grid"></div>
+</section>
+
+<script type="module">
+    import { renderRestaurants } from './js/restaurants.js';
+    import { renderCartPreview } from './js/cart.js';
+
+    document.addEventListener("DOMContentLoaded", () => {
+        renderRestaurants();
+        renderCartPreview();
+    });
+</script>
+
+</body>
+</html>

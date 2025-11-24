@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartEats — Customer Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="header container">
+    <div class="brand" onclick="location.href='index.html'">SmartEats</div>
+    <div class="searchbar">
+        <input placeholder="Search restaurants or dishes..." 
+               oninput="window.searchRestaurants && window.searchRestaurants(this.value)">
+    </div>
+    <div class="actions">
+        <a class="action-btn" href="orders.html">My Orders</a>
+        <a class="action-btn" href="#" onclick="logout()">Logout</a>
+    </div>
+</header>
+
+<!-- DASHBOARD SECTION -->
+<section class="container page-box">
+
+    <!-- Welcome -->
+    <h2 style="font-weight:900;margin-bottom:6px;">
+        Hello, <span id="custName">Customer</span> 👋
+    </h2>
+    <p style="color:var(--muted);margin-bottom:20px;">
+        Explore restaurants, order delicious meals & enjoy fast delivery.
+    </p>
+
+    <!-- Quick Actions -->
+    <div style="
+        background: rgba(255,255,255,0.55);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 26px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+        border: 1px solid rgba(255,255,255,0.4);
+    ">
+        <h3 style="margin-bottom:14px;">Quick Actions</h3>
+
+        <div style="display:flex;gap:16px;flex-wrap:wrap">
+            <button class="btn" style="flex:1;min-width:180px" onclick="location.href='orders.html'">
+                View Orders
+            </button>
+
+            <button class="btn secondary" style="flex:1;min-width:180px" onclick="location.href='cart.html'">
+                View Cart
+            </button>
+        </div>
+    </div>
+
+    <!-- Recommended Restaurants -->
+    <div class="section-title">Recommended For You</div>
+    <div id="restGrid" class="rest-grid"></div>
+
+</section>
+
+<!-- CART PREVIEW (auto rendered) -->
+<script type="module">
+    import { getSession } from './js/api.js';
+    import { logout as logoutFunc } from './js/auth.js';
+    import { renderRestaurants } from './js/restaurants.js';
+    import { renderCartPreview } from './js/cart.js';
+
+    window.logout = logoutFunc;
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const s = getSession();
+
+        // Guard: must be customer
+        if (!s || s.role !== "customer") {
+            window.location.href = "login.html";
+            return;
+        }
+
+        // Set name
+        document.getElementById("custName").innerText = s.name;
+
+        // Load restaurants
+        renderRestaurants();
+
+        // Load floating cart preview
+        renderCartPreview();
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartEats — Login</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body style="
+    background: linear-gradient(135deg, #ff7643 0%, #ff5722 40%, #ff9166 100%);
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:20px;
+">
+
+    <!-- Login Card (Glassmorphism) from PDF -->
+    <div class="form-card" style="
+        width: 420px;
+        backdrop-filter: blur(12px);
+        background: rgba(255, 255, 255, 0.35);
+        padding:32px;
+        border-radius: 18px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+        border:1px solid rgba(255,255,255,0.35);
+    ">
+        <h2 style="text-align:center;margin-bottom:6px;font-size:26px;font-weight:900;color:#fff">
+            Welcome to SmartEats
+        </h2>
+        <p style="text-align:center;color:#ffeae3;margin-bottom:22px">
+            Sign in to continue
+        </p>
+
+        <!-- Role Selector -->
+        <label style="color:#fff;font-weight:700">Select Role</label>
+        <select id="role" style="
+            width:100%;padding:12px;margin-top:8px;margin-bottom:14px;
+            border-radius:10px;border:1px solid rgba(255,255,255,0.5);
+            background:rgba(255,255,255,0.75);outline:none;
+        ">
+            <option value="customer">Customer</option>
+            <option value="restaurant">Restaurant</option>
+            <option value="delivery_partner">Delivery Partner</option>
+        </select>
+
+        <!-- Email Input -->
+        <input id="email" type="email" placeholder="Email" style="
+            width:100%;padding:14px;border-radius:10px;
+            border:1px solid rgba(255,255,255,0.5);
+            background:rgba(255,255,255,0.75);margin-bottom:14px;outline:none;
+        ">
+
+        <!-- Password Input -->
+        <input id="password" type="password" placeholder="Password" style="
+            width:100%;padding:14px;border-radius:10px;
+            border:1px solid rgba(255,255,255,0.5);
+            background:rgba(255,255,255,0.75);margin-bottom:18px;outline:none;
+        ">
+
+        <!-- Login Button -->
+        <button class="btn" onclick="handleLogin()" style="
+            width:100%;padding:14px;font-size:16px;border-radius:12px;
+            box-shadow:0 10px 30px rgba(255,87,34,0.35);
+        ">
+            Login
+        </button>
+
+        <hr style="margin:22px 0;border:none;border-top:1px solid rgba(255,255,255,0.4)">
+
+        <p style="text-align:center;color:#fff;margin-bottom:10px;font-weight:600">
+            New here? Create an account
+        </p>
+
+        <!-- Register Buttons -->
+        <div style="display:flex;flex-direction:column;gap:10px">
+            <a href="customer_register.html" class="btn secondary" style="text-align:center;">
+                Register as Customer
+            </a>
+            <a href="restaurant_register.html" class="btn secondary" style="text-align:center;">
+                Register as Restaurant
+            </a>
+            <a href="delivery_register.html" class="btn secondary" style="text-align:center;">
+                Register as Delivery Partner
+            </a>
+        </div>
+
+    </div>
+
+    <script type="module">
+        import { handleLogin } from './js/auth.js';
+        window.handleLogin = handleLogin;
+    </script>
+
+</body>
+</html>

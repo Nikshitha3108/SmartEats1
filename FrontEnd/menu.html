@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu — SmartEats</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header class="header container">
+    <div class="brand" onclick="location.href='restaurants.html'">SmartEats</div>
+    <div class="actions">
+        <a class="action-btn" href="cart.html">Cart</a>
+        <a class="action-btn" href="orders.html">Orders</a>
+    </div>
+</header>
+
+<section class="container page-box">
+    <h2 id="restName" class="section-title"></h2>
+
+    <div class="menu-list" id="menuList"></div>
+</section>
+
+<script type="module">
+    import { loadMenu } from './js/menu.js';
+    import { renderCartPreview } from './js/cart.js';
+
+    document.addEventListener("DOMContentLoaded", () => {
+        loadMenu();
+        renderCartPreview();
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Dashboard — SmartEats</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header class="header container">
+    <div class="brand">SmartEats — Delivery</div>
+    <div class="actions">
+        <a class="action-btn" onclick="logout()">Logout</a>
+    </div>
+</header>
+
+<section class="container page-box">
+
+    <h2 style="font-weight:900;margin-bottom:6px;">
+        Welcome, <span id="dpName">Delivery Partner</span> 🚚
+    </h2>
+
+    <p style="color:var(--muted);margin-bottom:20px;">
+        See assigned orders and update statuses.
+    </p>
+
+    <div class="dashboard-card">
+        <h3>Assigned Orders</h3>
+
+        <div id="assignedOrders"></div>
+    </div>
+
+</section>
+
+<script type="module">
+    import { getSession, get, save } from './js/api.js';
+    import { logout as logoutFn } from './js/auth.js';
+    window.logout = logoutFn;
+
+    const session = getSession();
+    if (!session || session.role !== "delivery_partner") {
+        location.href = "login.html";
+    }
+
+    document.getElementById("dpName").innerText = session.name;
+
+    function loadAssigned() {
+        const orders = get("orders") || [];
+        const mine = orders.filter(o => o.assignedDeliveryEmail === session.email);
+
+        const box = document.getElementById("assignedOrders");
+        box.innerHTML = "";
+
+        if (mine.length === 0) {
+            box.innerHTML = "<div style='color:var(--muted)'>No assigned deliveries yet.</div>";
+            return;
+        }
+
+        mine.forEach(o => {
+            const el = document.createElement("div");
+            el.className = "order-card";
+
+            el.innerHTML = `
+                <strong>Order #${o.id}</strong><br>
+                <div style="margin:6px 0">Total: ₹${o.total}</div>
+                <div>Status: ${o.status}</div>
+
+                <div style="margin-top:12px;display:flex;gap:10px;">
+                    <button class="btn" onclick="updateStatus(${o.id}, 'Picked Up')">Picked Up</button>
+                    <button class="btn secondary" onclick="updateStatus(${o.id}, 'Out for Delivery')">
+                        Out for Delivery
+                    </button>
+                    <button class="btn" onclick="updateStatus(${o.id}, 'Delivered')">
+                        Delivered
+                    </button>
+                </div>
+            `;
+
+            box.appendChild(el);
+        });
+    }
+
+    window.updateStatus = (id, status) => {
+        const orders = get("orders") || [];
+        const o = orders.find(x => x.id === id);
+        if (o) {
+            o.status = status;
+            save("orders", orders);
+            loadAssigned();
+        }
+    };
+
+    document.addEventListener("DOMContentLoaded", loadAssigned);
+</script>
+
+</body>
+</html>

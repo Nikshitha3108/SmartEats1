@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart — SmartEats</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header class="header container">
+    <div class="brand" onclick="location.href='customer_dashboard.html'">SmartEats</div>
+    <div class="actions">
+        <a class="action-btn" href="orders.html">Orders</a>
+    </div>
+</header>
+
+<section class="page-box container">
+
+    <h2 class="section-title">Your Cart</h2>
+
+    <div class="dashboard-card">
+        <div id="cartItems"></div>
+
+        <div style="display:flex;justify-content:space-between;margin-top:20px;font-size:18px;font-weight:800">
+            <span>Total:</span>
+            <span id="cartTotal">₹0</span>
+        </div>
+
+        <button class="btn" style="margin-top:18px;width:100%" onclick="checkoutOrder()">
+            Place Order
+        </button>
+    </div>
+
+</section>
+
+<script type="module">
+    import { loadCart, checkoutOrder } from './js/cart.js';
+    window.checkoutOrder = checkoutOrder;
+
+    document.addEventListener("DOMContentLoaded", () => {
+        loadCart();
+    });
+</script>
+
+</body>
+</html>
