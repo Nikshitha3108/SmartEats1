@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users — Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+
+<body>
+
+<header class="header container">
+    <div class="brand">SmartEats — Admin Panel</div>
+    <div class="actions">
+        <a class="action-btn" href="admin_dashboard.html">Dashboard</a>
+        <a class="action-btn" onclick="logout()">Logout</a>
+    </div>
+</header>
+
+<section class="container page-box">
+
+    <h2 class="section-title">Manage Users</h2>
+
+    <!-- FILTERS -->
+    <div class="admin-filter">
+        <select id="filterRole" onchange="loadUsers()" class="admin-select">
+            <option value="all">All Users</option>
+            <option value="customer">Customers</option>
+            <option value="restaurant">Restaurants</option>
+            <option value="delivery_partner">Delivery Partners</option>
+            <option value="admin">Admins</option>
+        </select>
+    </div>
+
+    <!-- USERS TABLE -->
+    <div class="dashboard-card">
+        <div id="usersList"></div>
+    </div>
+
+</section>
+
+<script type="module">
+    import { get, save, getSession } from './js/api.js';
+    import { logout as logoutFn } from './js/auth.js';
+
+    window.logout = logoutFn;
+
+    const s = getSession();
+    if (!s || s.role !== "admin") location.href = "login.html";
+
+    window.loadUsers = () => {
+        const filter = document.getElementById("filterRole").value;
+        const users = get("users") || [];
+        const box = document.getElementById("usersList");
+
+        box.innerHTML = "";
+
+        users
+            .filter(u => filter === "all" ? true : u.role === filter)
+            .forEach(u => {
+                const row = document.createElement("div");
+                row.className = "admin-row";
+
+                row.innerHTML = `
+                    <div class="admin-user-block">
+                        <img src="images/icons/user.svg" class="admin-icon">
+                        <div>
+                            <strong>${u.name}</strong> <br>
+                            <small>${u.email}</small>
+                        </div>
+                    </div>
+
+                    <div class="admin-role-tag">${u.role}</div>
+
+                    <button class="admin-delete-btn" onclick="deleteUser('${u.email}')">
+                        <img src="images/icons/delete.svg">
+                    </button>
+                `;
+
+                box.appendChild(row);
+            });
+    };
+
+    window.deleteUser = (email) => {
+        let users = get("users") || [];
+        users = users.filter(u => u.email !== email);
+        save("users", users);
+        loadUsers();
+    };
+
+    document.addEventListener("DOMContentLoaded", loadUsers);
+   
+    import { initManageUsers } from "./js/admin.js";
+
+    document.addEventListener("DOMContentLoaded", initManageUsers);
+
+
+</script>
+
+</body>
+</html>

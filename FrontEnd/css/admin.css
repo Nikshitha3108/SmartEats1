@@ -1,0 +1,57 @@
+/* Admin Panel Additional Styling */
+
+.admin-filter {
+    margin-bottom: 18px;
+}
+
+.admin-select {
+    padding: 12px;
+    width: 240px;
+    font-size: 15px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    background: #fff;
+}
+
+.admin-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px;
+    border-radius: 14px;
+    margin-bottom: 12px;
+    background: rgba(255, 255, 255, 0.75);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+.admin-user-block, .admin-order-block {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+}
+
+.admin-role-tag {
+    padding: 6px 12px;
+    background: #eef2ff;
+    color: #3b41f1;
+    border-radius: 10px;
+    font-weight: 700;
+}
+
+.admin-delete-btn {
+    background: #ffdddd;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.admin-delete-btn img {
+    width: 18px;
+    height: 18px;
+}
+
+.admin-icon {
+    width: 30px;
+    height: 30px;
+}

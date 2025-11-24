@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Orders — Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+    
+
+</head>
+
+<body>
+
+<header class="header container">
+    <div class="brand">SmartEats — Admin Panel</div>
+    <div class="actions">
+        <a class="action-btn" href="admin_dashboard.html">Dashboard</a>
+        <a class="action-btn" onclick="logout()">Logout</a>
+    </div>
+</header>
+
+<section class="container page-box">
+
+    <h2 class="section-title">Manage Orders</h2>
+
+    <!-- Filters -->
+    <div class="admin-filter">
+        <select id="orderFilter" onchange="loadOrders()" class="admin-select">
+            <option value="all">All Orders</option>
+            <option value="Pending">Pending</option>
+            <option value="Preparing">Preparing</option>
+            <option value="Assigned">Assigned</option>
+            <option value="Picked Up">Picked Up</option>
+            <option value="Out for Delivery">Out for Delivery</option>
+            <option value="Delivered">Delivered</option>
+        </select>
+    </div>
+
+    <!-- Orders List -->
+    <div class="dashboard-card">
+        <div id="ordersList"></div>
+    </div>
+
+</section>
+
+<script type="module">
+    import { get, save, getSession } from './js/api.js';
+    import { logout as logoutFn } from './js/auth.js';
+
+    window.logout = logoutFn;
+
+    const session = getSession();
+    if (!session || session.role !== "admin") location.href = "login.html";
+
+    window.loadOrders = () => {
+        const filter = document.getElementById("orderFilter").value;
+        const orders = get("orders") || [];
+        const box = document.getElementById("ordersList");
+
+        box.innerHTML = "";
+
+        orders
+            .filter(o => filter === "all" ? true : o.status === filter)
+            .forEach(o => {
+                const row = document.createElement("div");
+                row.className = "admin-row";
+
+                row.innerHTML = `
+                    <div class="admin-order-block">
+                        <img src="images/icons/order.svg" class="admin-icon">
+
+                        <div>
+                            <strong>Order #${o.id}</strong> <br>
+                            <small>Total: ₹${o.total}</small>
+                            <br>
+                            <small>Status: ${o.status}</small>
+                        </div>
+                    </div>
+
+                    <button class="admin-delete-btn" onclick="deleteOrder(${o.id})">
+                        <img src="images/icons/delete.svg">
+                    </button>
+                `;
+                box.appendChild(row);
+            });
+    };
+
+    window.deleteOrder = (id) => {
+        let orders = get("orders") || [];
+        orders = orders.filter(o => o.id !== id);
+        save("orders", orders);
+        loadOrders();
+    };
+
+    
+    import { initManageOrders } from "./js/admin.js";
+
+    document.addEventListener("DOMContentLoaded", initManageOrders);
+
+
+
+</script>
+
+</body>
+</html>

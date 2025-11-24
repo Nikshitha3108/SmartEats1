@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartEats Admin Panel</title>
+    <link rel="stylesheet" href="css/style.css">
+    <div class="admin-nav">
+    <a href="admin_manage_users.html" class="btn">Manage Users</a>
+    <a href="admin_manage_orders.html" class="btn">Manage Orders</a>
+</div>
+
+    
+</head>
+
+<body>
+
+<header class="header container">
+    <div class="brand">SmartEats — Admin</div>
+    <div class="actions">
+        <a class="action-btn" href="#" onclick="logout()">Logout</a>
+    </div>
+</header>
+
+<section class="container page-box">
+
+    <h2 style="font-weight:900;margin-bottom:10px;">Admin Dashboard</h2>
+    <p style="color:var(--muted);margin-bottom:20px;">Manage platform data and users.</p>
+
+    <!-- Dashboard Stats -->
+    <div class="rest-grid">
+
+        <div class="dashboard-card">
+            <h3>Total Customers</h3>
+            <div id="custCount" style="font-size:28px;font-weight:900;margin-top:12px;">0</div>
+        </div>
+
+        <div class="dashboard-card">
+            <h3>Total Restaurants</h3>
+            <div id="restCount" style="font-size:28px;font-weight:900;margin-top:12px;">0</div>
+        </div>
+
+        <div class="dashboard-card">
+            <h3>Total Delivery Partners</h3>
+            <div id="dpCount" style="font-size:28px;font-weight:900;margin-top:12px;">0</div>
+        </div>
+
+        <div class="dashboard-card">
+            <h3>Total Orders</h3>
+            <div id="orderCount" style="font-size:28px;font-weight:900;margin-top:12px;">0</div>
+        </div>
+
+    </div>
+
+    <!-- User Management -->
+    <div class="dashboard-card" style="margin-top:28px;">
+        <h3>All Users</h3>
+        <div id="allUsers"></div>
+    </div>
+
+    <!-- Orders -->
+    <div class="dashboard-card" style="margin-top:28px;">
+        <h3>All Orders</h3>
+        <div id="allOrders"></div>
+    </div>
+
+</section>
+
+<script type="module">
+    import { getSession, get, save } from './js/api.js';
+    import { logout as logoutFn } from './js/auth.js';
+
+    window.logout = logoutFn;
+
+    const s = getSession();
+    if (!s || s.role !== "admin") {
+        window.location.href = "login.html";
+    }
+
+    function loadAdminStats() {
+        const users = get("users") || [];
+        const orders = get("orders") || [];
+
+        document.getElementById("custCount").innerText =
+            users.filter(u => u.role === "customer").length;
+
+        document.getElementById("restCount").innerText =
+            users.filter(u => u.role === "restaurant").length;
+
+        document.getElementById("dpCount").innerText =
+            users.filter(u => u.role === "delivery_partner").length;
+
+        document.getElementById("orderCount").innerText = orders.length;
+    }
+
+    function loadUsers() {
+        const users = get("users") || [];
+        const box = document.getElementById("allUsers");
+        box.innerHTML = "";
+
+        users.forEach(u => {
+            const div = document.createElement("div");
+            div.className = "order-card";
+
+            div.innerHTML = `
+                <strong>${u.name}</strong> — ${u.role} <br>
+                <small>${u.email}</small>
+
+                <button class="btn secondary" 
+                    style="margin-top:10px"
+                    onclick="deleteUser('${u.email}')">
+                    Delete User
+                </button>
+            `;
+            box.appendChild(div);
+        });
+    }
+
+    window.deleteUser = (email) => {
+        let users = get("users") || [];
+        users = users.filter(u => u.email !== email);
+        save("users", users);
+        loadUsers();
+        loadAdminStats();
+    };
+
+    function loadOrders() {
+        const orders = get("orders") || [];
+        const box = document.getElementById("allOrders");
+        box.innerHTML = "";
+
+        orders.forEach(o => {
+            const div = document.createElement("div");
+            div.className = "order-card";
+
+            div.innerHTML = `
+                <strong>Order #${o.id}</strong><br>
+                <small>Total: ₹${o.total}</small><br>
+                <small>Status: ${o.status}</small>
+
+                <button class="btn secondary" 
+                    style="margin-top:10px"
+                    onclick="deleteOrder(${o.id})">
+                    Delete Order
+                </button>
+            `;
+            box.appendChild(div);
+        });
+    }
+
+    window.deleteOrder = (id) => {
+        let orders = get("orders") || [];
+        orders = orders.filter(o => o.id !== id);
+        save("orders", orders);
+        loadOrders();
+        loadAdminStats();
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+        loadAdminStats();
+        loadUsers();
+        loadOrders();
+    });
+    
+    import { initAdminDashboard, loadUsersFiltered, loadAllOrders } from "./js/admin.js";
+
+    document.addEventListener("DOMContentLoaded", () => {
+        initAdminDashboard();
+        loadUsersFiltered(); 
+        loadAllOrders();
+    });
+
+
+</script>
+
+</body>
+</html>

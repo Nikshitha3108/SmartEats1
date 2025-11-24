@@ -40,6 +40,10 @@ export function handleLogin() {
         alert("Invalid credentials");
         return;
     }
+    if (role === "admin") {
+    window.location.href = "admin_dashboard.html";
+    return;
+}
 
     saveSession(user);
 
